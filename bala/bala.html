@@ -1,0 +1,46 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Ejemplo Nave</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <!-- Lienzo de dibujo -->
+    <canvas id="miCanvas" width="640" height="480"></canvas>
+
+    <script type="application/javascript">
+        //Recuperamos el canvas donde dibujaremos
+        var canvas = document.getElementById("miCanvas");
+        //Establecemos el contexto de ese canvas en 2D. Es decir, dibujaremos en 2D.
+        var contexto = canvas.getContext("2d");
+
+
+
+        //Dibujamos una bala (Página 42 del libro)
+        contexto.fillRect(90, 100, 7, 30);
+        contexto.fillRect(100, 100, 50, 30);
+        contexto.arc(150, 115, 15, 1.5 * Math.PI, 0.5 * Math.PI, false);
+        contexto.fill();
+
+    </script>
+    <style>
+        #miCanvas {
+            border: 1px solid #000;
+        }
+    </style>
+
+</body>
+
+</html>

@@ -1,0 +1,53 @@
+<!doctype html>
+<html class="no-js" lang="">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Ejemplo Nave</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="manifest" href="site.webmanifest">
+    <link rel="apple-touch-icon" href="icon.png">
+    <!-- Place favicon.ico in the root directory -->
+
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+
+<body>
+    <!-- Lienzo de dibujo -->
+    <canvas id="miCanvas" width="640" height="480"></canvas>
+
+    <script type="application/javascript">
+        //Recuperamos el canvas donde dibujaremos
+        var canvas = document.getElementById("miCanvas");
+        //Establecemos el contexto de ese canvas en 2D. Es decir, dibujaremos en 2D.
+        var contexto = canvas.getContext("2d");
+
+        //Cargamos imágenes (Página 53 del libro)
+        var spriteSheet = new Image();
+        var x = 10;
+        var y = 10;
+
+        spriteSheet.onload = function () {
+            setInterval(actualizarJuego, 1000 / 33);
+        };
+        spriteSheet.src = "../images/1942-general-sprites.png";
+
+        function actualizarJuego() {
+            //contexto.fillStyle = "white";
+            //contexto.fillRect(0, 0, 640, 480);
+            contexto.drawImage(spriteSheet, 5, 6, 25, 16, x, y, 25, 16);
+            //x++;
+        }
+    </script>
+    <style>
+        #miCanvas {
+            border: 1px solid #000;
+        }
+    </style>
+</body>
+
+</html>
