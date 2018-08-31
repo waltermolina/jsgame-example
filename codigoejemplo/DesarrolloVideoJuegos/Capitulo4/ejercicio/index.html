@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mi videojuego</title>
+        <script src="scripts/framework.js" type="application/javascript"></script>
+        <script src="scripts/teclado.js" type="application/javascript"></script>
+        <script src="scripts/mouse.js" type="application/javascript"></script>
+        <script src="scripts/avion.js" type="application/javascript"></script>
+        <script src="scripts/enemigo.js" type="application/javascript"></script>
+        <script src="scripts/bala.js" type="application/javascript"></script>
+    </head>
+	<body>
+		<canvas id="miCanvas" width="640" height="480"></canvas>
+	</body>
+    <script type="application/javascript">
+
+        var spriteSheet = new Image();
+        
+        spriteSheet.onload = function () {
+            for (var i = 0; i < 10; i++) {
+                var enemigoClon = Object.create(enemigo);
+                enemigoClon.x = (Math.random() * 400) + 40;
+                enemigoClon.actualizar = enemigoClon.actualizarNormal;
+                enemigoClon.dibujar = enemigoClon.dibujarNormal;
+                framework.objetosDeJuego.push(enemigoClon);
+            }
+
+            framework.objetosDeJuego.push(avion);
+            
+            for (var i = 0; i < 10; i++) {
+                var balaClon = Object.create(bala);
+                framework.objetosDeJuego.push(balaClon);
+            }
+                        
+            framework.iniciar();
+            mouse.iniciar();
+            teclado.iniciar();
+        };
+
+        spriteSheet.src = 'images/1942.png';
+		
+    </script>
+</html>

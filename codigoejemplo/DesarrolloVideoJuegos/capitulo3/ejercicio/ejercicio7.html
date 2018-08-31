@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mi videojuego</title>
+    </head>
+	<body>
+		<canvas id="miCanvas" width="640" height="480"></canvas>
+	</body>
+    <script type="application/javascript">
+        var canvas = document.getElementById('miCanvas'),
+            contexto = canvas.getContext('2d');
+		
+        var spriteSheet = new Image(),
+            x = 10, y = 10;
+
+        spriteSheet.onload = function () {
+            setInterval(actualizarJuego, 1000/33);
+        };
+
+		var posiciones = [{ x: 134, y: 6, ancho: 24, alto: 16},
+						  { x: 70, y: 6, ancho: 24, alto: 16},
+						  { x: 38, y: 6, ancho: 24, alto: 16},
+						  { x: 101, y: 6, ancho: 24, alto: 16},
+						  { x: 166, y: 6, ancho: 24, alto: 16}],
+			indiceAnimacion = 0,
+			ultimoCuadro = new Date().getTime(),
+			tiempoAcumulado = 0;
+
+		document.addEventListener('keydown', teclaPresionada, false);
+		document.addEventListener('keyup', teclaNoPresionada, false);
+		
+		canvas.addEventListener('click', clickMouse, false);
+
+		function clickMouse(event) {
+			objetivoX = event.x;
+			objetivoY = event.y;
+		}
+
+		var velocidadMovimiento = 20,
+			objetivoX = 0,
+			objetivoY = 0;
+		
+		var teclasPresionadas = {
+			'65': false,
+			'83': false,
+			'68': false,
+			'87': false
+		};
+
+		function teclaNoPresionada(event) {
+			var tecla = event.keyCode;
+			teclasPresionadas[tecla] = false;
+		}
+			
+		function teclaPresionada(event) {
+			var tecla = event.keyCode;
+			teclasPresionadas[tecla] = true;
+		}
+			
+		function crearEnemigo() {
+			return {
+				x: (Math.random() * 400) + 40,
+				y: 1,			
+				actualizar: function () {
+					this.y++;
+				},			
+				dibujar: function (contexto) {
+					contexto.drawImage(spriteSheet, 5, 200, 14, 15, this.x, this.y, 14, 15);
+				}
+			};
+		}
+
+		var enemigos = [];
+
+		for (var i = 0; i < 10; i++) {
+			enemigos.push(crearEnemigo());
+		}
+					
+		function actualizarJuego() {
+			var esteCuadro = new Date().getTime(),
+				delta = (esteCuadro - ultimoCuadro) / 1000;
+			ultimoCuadro = esteCuadro;
+			tiempoAcumulado += delta;
+
+			contexto.fillStyle = 'white';
+			contexto.fillRect(0, 0, 640, 480);
+
+			var imagenActual = posiciones[indiceAnimacion];
+
+			for (var i = 0; i < enemigos.length; i++) {
+				enemigos[i].actualizar();
+				enemigos[i].dibujar(contexto);
+			}
+			
+			x += (objetivoX - x) / velocidadMovimiento;
+			y += (objetivoY - y) / velocidadMovimiento;
+
+			if (teclasPresionadas['65']) {
+				x--;
+				if (indiceAnimacion > 0 && tiempoAcumulado > 1) {
+					tiempoAcumulado = 0;
+					indiceAnimacion--;
+				}
+			}
+
+			if (teclasPresionadas['68']) {
+				x++;
+				if (indiceAnimacion < 4 && tiempoAcumulado > 1) {
+					tiempoAcumulado = 0;
+					indiceAnimacion++;
+				}
+			}
+
+			if (teclasPresionadas['83']) {
+				y++;
+			}
+
+			if (teclasPresionadas['87']) {
+				y--;
+			}
+
+
+			if (!teclasPresionadas['65'] && !teclasPresionadas['68']) {
+				if (indiceAnimacion !== 2 && tiempoAcumulado > 1) {
+					tiempoAcumulado = 0;
+					indiceAnimacion -= indiceAnimacion > 2 ? 1 : -1;
+				}
+			}
+			
+			contexto.drawImage(spriteSheet, imagenActual.x, imagenActual.y, 25, 16, x, y, 25, 16);
+		}
+
+        spriteSheet.src = 'images/1942.png';
+		
+    </script>
+</html>

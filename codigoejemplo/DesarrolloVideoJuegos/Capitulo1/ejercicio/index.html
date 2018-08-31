@@ -1,0 +1,32 @@
+<html>
+    <head>
+        <time></time>
+    </head>
+    <body>
+        <canvas id="lienzo" width="640" height="480"></canvas>
+    </body>
+    <script type="application/javascript">
+        /*for ( ; ; ) {
+            //Tareas varias
+        }*/
+        
+        var c = document.getElementById('lienzo');
+        var ctx = c.getContext('2d');
+        
+        document.getElementById('lienzo').addEventListener('click', function() {
+            console.log('Mouse presionado');
+        }, false);
+        
+        ctx.strokeRect(10, 10, 100, 100);
+
+        ctx.fillStyle = 'red';
+        ctx.fillRect(10, 150, 100, 100);
+        
+        
+        function bucleDeJuego() {
+            //console.log('ejecutado');
+        }
+
+        setInterval(bucleDeJuego, 1000/33);
+    </script>
+</html>

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mi videojuego</title>
+    </head>
+    <body>
+        <canvas id="miCanvas" width="640" height="480"></canvas>
+    </body>
+    <script type="application/javascript">
+        var canvas = document.getElementById('miCanvas'),
+            contexto = canvas.getContext('2d');
+        
+        var spriteSheet = new Image(),
+            x = 10, y = 10;
+
+        spriteSheet.onload = function () {
+            setInterval(actualizarJuego, 1000/33);
+        };
+
+        var posiciones = [{ x: 38, y: 6, ancho: 24, alto: 16},
+                          { x: 101, y: 6, ancho: 24, alto: 16},
+                          { x: 166, y: 6, ancho: 24, alto: 16}],
+            indiceAnimacion = 0,
+            ultimoCuadro = new Date().getTime(),
+            tiempoAcumulado = 0;
+
+		var moverDerecha = function () {
+			x++;
+
+			if (indiceAnimacion < 2 && tiempoAcumulado > 1) {
+				tiempoAcumulado = 0;
+				indiceAnimacion++;
+			}
+		}
+
+		var moverIzquierda = function () {
+			x--;
+
+			if (indiceAnimacion > 0 && tiempoAcumulado > 1) {
+				tiempoAcumulado = 0;
+				indiceAnimacion--;
+			}
+		}
+
+		var moverPersonaje = moverDerecha;		
+			
+		function actualizarJuego() {
+			var esteCuadro = new Date().getTime(),
+				delta = (esteCuadro - ultimoCuadro) / 1000;
+			ultimoCuadro = esteCuadro;
+			tiempoAcumulado += delta;
+
+			contexto.fillStyle = 'white';
+			contexto.fillRect(0, 0, 640, 480);
+
+			var imagenActual = posiciones[indiceAnimacion];
+
+			contexto.drawImage(spriteSheet, imagenActual.x, imagenActual.y, 25, 16, x, y, 25, 16);
+			moverPersonaje();
+			
+			if (x > 200) {
+				moverPersonaje = moverIzquierda;
+			}
+		}
+
+        spriteSheet.src = 'images/1942.png';
+    </script>
+</html>

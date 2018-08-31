@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mi videojuego</title>
+        <script src="Framework/jsGFwk.js"></script>
+        <script src="Framework/jsGFwk2dFastAnimation.js"></script>
+        <script src="Framework/jsGFwkCollisions.js"></script>
+        <script src="Framework/jsGFwkContainer.js"></script>
+        <script src="Framework/jsGFwkIO.js"></script>
+        <script src="Framework/jsGFwkRM.js"></script>
+        <script src="Framework/jsGFwkJukebox.js" language="Javascript"></script>
+        <script src="Framework/jsGFwkFonts.js"></script>
+        <script src="Framework/jsGFwkScenes.js"></script>
+        <script src="Framework/jsGFwkTimers.js"></script>
+        <script src="scripts/avion.js" type="application/javascript"></script>
+        <script src="scripts/enemigo.js" type="application/javascript"></script>
+        <script src="scripts/bala.js" type="application/javascript"></script>
+        <script src="scripts/fondoJuego.js" type="application/javascript"></script>
+        <script src="scripts/puntaje.js" type="application/javascript"></script>
+        <script src="scripts/controlJuego.js" type="application/javascript"></script>
+        <script src="scripts/hud.js" type="application/javascript"></script>
+    </head>
+    <body>
+        <canvas id="miCanvas" width="640" height="480"></canvas>
+    </body>
+    <script type="application/javascript">
+        jsGFwk.settings.canvas = "miCanvas";
+        jsGFwk.settings.clearColor = "rgb(0, 0, 0)";
+        jsGFwk.settings.frameRate = 1000 / 60;
+
+        jsGFwk.include("FastAnimation");
+        jsGFwk.include("IO");
+        jsGFwk.include("Collisions");
+        jsGFwk.include("ResourceManager");
+        jsGFwk.include("Container");
+        jsGFwk.include("Fonts");
+        jsGFwk.include("Scenes");
+        
+        jsGFwk.Fonts.createFont({ name: 'retroBits', source: 'zxBold.ttf' });
+        
+        jsGFwk.ResourceManager.addGraphic({ name: "principal", source: "images/1942.png" });
+        jsGFwk.ResourceManager.addGraphic({ name: "fondo1", source: "images/fondo.png" });
+        jsGFwk.ResourceManager.addGraphic({ name: "fondo2", source: "images/fondo2.png" });
+        jsGFwk.ResourceManager.addGraphic({ name: "fondo3", source: "images/fondo3.png" });
+
+        var explosion = {};
+        explosion[jsGFwk.ResourceManager.sounds.format.wav] = { source: "sounds/Explosion.wav" };
+        explosion[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "sounds/Explosion.ogg" };
+        jsGFwk.ResourceManager.addSound({ name: "explosion", sources: explosion});
+
+        var disparo = {};
+        disparo[jsGFwk.ResourceManager.sounds.format.wav] = { source: "sounds/Laser_Shoot.wav" };
+        disparo[jsGFwk.ResourceManager.sounds.format.ogg] = { source: "sounds/Laser_Shoot.ogg" };
+        jsGFwk.ResourceManager.addSound({ name: "disparo", sources: disparo});
+        
+        var canalDisparo,
+            canalExplosion,
+            puntos = 0,
+            ultimoPuntaje = 0;
+        
+        jsGFwk.createObject({
+            id: "cargadorProgreso",
+            visible: true,
+            init: function() {
+                jsGFwk.ResourceManager.onResourcesLoadedCompleted = function() {
+                    jsGFwk.getGameObjects().cargadorProgreso.destroy();
+
+                    canalDisparo = new jsGFwk.Jukebox({
+                        volume: 0,
+                        channels: 5,
+                        source: jsGFwk.ResourceManager.sounds.disparo 
+                    });
+
+                    canalExplosion = new jsGFwk.Jukebox({
+                        volume: 0,
+                        channels: 5,
+                        source: jsGFwk.ResourceManager.sounds.explosion 
+                    });
+
+                    var contenedorBalas = jsGFwk.Container.createContainer('contenedorBalas', bala, true);
+                    var contenedorEnemigos = jsGFwk.Container.createContainer('contenedorEnemigo', enemigo, true);
+
+                    jsGFwk.Scenes.create({name: "portada", gameObjects: [fondoJuego, hud] });
+                    jsGFwk.Scenes.create({name: "juego", gameObjects: [fondoJuego, avion, controlJuego, puntaje, contenedorBalas, contenedorEnemigos] });
+
+                    jsGFwk.Scenes.scenes.portada.enable();
+                };
+            },
+            update: function(delta) {
+            },
+            draw: function (context) {
+                context.fillStyle = "white";
+                context.font = "30pt verdana";
+                context.fillText(jsGFwk.ResourceManager._totalLoadedResources + '/' + jsGFwk.ResourceManager._totalResources, 250, 220);
+            }
+        });
+        
+        jsGFwk.start();
+    </script>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mi videojuego</title>
+    </head>
+    <body>
+        <canvas id="miCanvas" width="640" height="480"></canvas>
+    </body>
+    <script type="application/javascript">
+        //El código de juego a continuación
+        var canvas = document.getElementById('miCanvas'),
+            contexto = canvas.getContext('2d');
+
+        contexto.fillStyle = "blue";
+        contexto.fillRect(90, 100, 7, 30);
+        contexto.fillRect(100, 100, 50, 30);
+        contexto.beginPath()
+        contexto.arc(150, 115, 15, 1.5 * Math.PI, 0.5 * Math.PI, false);
+        contexto.closePath();
+        contexto.fill();
+        
+        contexto.strokeStyle = "rgb(20, 71, 108)";
+        contexto.strokeRect(190, 100, 7, 30);
+        contexto.strokeRect(200, 100, 50, 30);
+        contexto.beginPath()
+        contexto.arc(250, 115, 15, 1.5 * Math.PI, 0.5 * Math.PI, false);
+        contexto.closePath();
+        contexto.stroke();
+    </script>
+</html>

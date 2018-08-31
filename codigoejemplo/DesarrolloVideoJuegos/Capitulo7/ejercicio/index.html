@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Mi videojuego</title>
+        <script src="phaser/phaser.min.js" type="application/javascript"></script>
+        <script src="scripts/boot.js" type="application/javascript"></script>
+        <script src="scripts/hud.js" type="application/javascript"></script>
+        <script src="scripts/mainGame.js" type="application/javascript"></script>
+        <style>
+            @font-face { 
+                font-family: 'retroBits';
+                src: url('zxBold.ttf');
+            }
+        </style>
+    </head>
+    <body>
+    </body>
+    <script type="application/javascript">
+        var game = undefined;
+        
+        window.onload = function() {
+            game = new Phaser.Game(640, 480, Phaser.AUTO, '');
+
+            game.state.add('boot', boot);
+            game.state.add('hud', hud);
+            game.state.add('game', mainGame);
+
+            game.state.start('boot');
+        };
+    </script>
+</html>
